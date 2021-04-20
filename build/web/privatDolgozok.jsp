@@ -31,7 +31,11 @@
                         <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Oldalak <span class="caret"></span></a>
                             <ul class="dropdown-menu">
                                 <li><a href="privatDolgozok.jsp">Dolgozók részlegenként</a></li>
+                                <% if ((session.getAttribute("munkakor").equals("Stock Manager")
+                                            && session.getAttribute("reszleg").equals("Shipping"))
+                                            || session.getAttribute("reszleg").equals("Executive")) { %>
                                 <li><a href="terkepek.jsp">Térkép</a></li>
+                                <% }%>
                             </ul>
                         </li>
                         <li><a href="loginOK.jsp">Profil</a></li>

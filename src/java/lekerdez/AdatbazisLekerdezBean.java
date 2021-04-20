@@ -33,30 +33,31 @@ public class AdatbazisLekerdezBean implements AdatbazisKapcsolat {
 //                + "WHERE E.DEPARTMENT_ID = D.DEPARTMENT_ID\n"
 //                + "AND E.JOB_ID = J.JOB_ID\n"
 //                + "AND EMAIL = '" +fnev+ "' AND LAST_NAME = '" +jelszo+ "'";
+
     public boolean bejelentkezesEllenorzes(String fnev, String jelszo) {
         String SQL_F = "SELECT E.FIRST_NAME, E.LAST_NAME, E.EMAIL, E.PHONE_NUMBER, E.HIRE_DATE, E.SALARY, J.JOB_TITLE, D.DEPARTMENT_NAME\n"
                 + "FROM EMPLOYEES E, JOBS J, DEPARTMENTS D\n"
                 + "WHERE E.DEPARTMENT_ID = D.DEPARTMENT_ID\n"
                 + "AND E.JOB_ID = J.JOB_ID\n"
-                + "AND EMAIL = '" +fnev+ "' AND LAST_NAME = '" +jelszo+ "'";
+                + "AND EMAIL = '" + fnev + "' AND LAST_NAME = '" + jelszo + "'";
         boolean siker = false;
         try {
             Class.forName(DRIVER);
             Connection kapcsolat = DriverManager.getConnection(URL, USER, PASSWORD);
-                ResultSet eredmeny = kapcsolat.createStatement().executeQuery(SQL_F);
-                
-                while (eredmeny.next()) {
-                    String email = eredmeny.getString("EMAIL");
-                    String knev = eredmeny.getString("FIRST_NAME");
-                    String vnev = eredmeny.getString("LAST_NAME");
-                    String tel = eredmeny.getString("PHONE_NUMBER").replace('.', '-');
-                    String[] dat = eredmeny.getString("HIRE_DATE").split(" ");
-                    String fizu = eredmeny.getString("SALARY");
-                    String munkakor = eredmeny.getString("JOB_TITLE");
-                    String reszleg = eredmeny.getString("DEPARTMENT_NAME");  
-                    felhasznalo = new LekerdezFelhasznaloAdat(email, knev, vnev, tel, dat[0], fizu, munkakor, reszleg);
-                    siker = true;
-                }
+            ResultSet eredmeny = kapcsolat.createStatement().executeQuery(SQL_F);
+
+            while (eredmeny.next()) {
+                String email = eredmeny.getString("EMAIL");
+                String knev = eredmeny.getString("FIRST_NAME");
+                String vnev = eredmeny.getString("LAST_NAME");
+                String tel = eredmeny.getString("PHONE_NUMBER").replace('.', '-');
+                String[] dat = eredmeny.getString("HIRE_DATE").split(" ");
+                String fizu = eredmeny.getString("SALARY");
+                String munkakor = eredmeny.getString("JOB_TITLE");
+                String reszleg = eredmeny.getString("DEPARTMENT_NAME");
+                felhasznalo = new LekerdezFelhasznaloAdat(email, knev, vnev, tel, dat[0], fizu, munkakor, reszleg);
+                siker = true;
+            }
             kapcsolat.close();
         } catch (ClassNotFoundException | SQLException e) {
         }
