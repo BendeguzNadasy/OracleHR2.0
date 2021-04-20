@@ -42,7 +42,7 @@ public class AdatbazisLekerdezBean implements AdatbazisKapcsolat {
         boolean siker = false;
         try {
             Class.forName(DRIVER);
-            try (Connection kapcsolat = DriverManager.getConnection(URL, USER, PASSWORD)) {
+            Connection kapcsolat = DriverManager.getConnection(URL, USER, PASSWORD);
                 ResultSet eredmeny = kapcsolat.createStatement().executeQuery(SQL_F);
                 
                 while (eredmeny.next()) {
@@ -53,13 +53,11 @@ public class AdatbazisLekerdezBean implements AdatbazisKapcsolat {
                     String[] dat = eredmeny.getString("HIRE_DATE").split(" ");
                     String fizu = eredmeny.getString("SALARY");
                     String munkakor = eredmeny.getString("JOB_TITLE");
-                    String reszleg = eredmeny.getString("DEPARTMENT_NAME");
-                    
-                    felhasznalo =
-                            new LekerdezFelhasznaloAdat(email, knev, vnev, tel, dat[0], fizu, munkakor, reszleg);
+                    String reszleg = eredmeny.getString("DEPARTMENT_NAME");  
+                    felhasznalo = new LekerdezFelhasznaloAdat(email, knev, vnev, tel, dat[0], fizu, munkakor, reszleg);
                     siker = true;
                 }
-            }
+            kapcsolat.close();
         } catch (ClassNotFoundException | SQLException e) {
         }
         return siker;
